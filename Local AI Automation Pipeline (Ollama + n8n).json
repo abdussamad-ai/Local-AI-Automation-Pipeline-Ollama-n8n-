@@ -1,0 +1,61 @@
+{
+  "name": "Local AI Automation Pipeline (Ollama + n8n)",
+  "nodes": [
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "input_text",
+              "value": "Write a 2-sentence summary about artificial intelligence and automation."
+            }
+          ]
+        }
+      },
+      "id": "node-input-1",
+      "name": "Set Input Text",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:11434/api/generate",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"llama3.2\",\n  \"prompt\": \"={{ $json.input_text }}\",\n  \"stream\": false\n}",
+        "options": {}
+      },
+      "id": "node-ollama-2",
+      "name": "Ollama Local AI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        480,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Set Input Text": {
+      "main": [
+        [
+          {
+            "node": "Ollama Local AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": []
+}
